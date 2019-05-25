@@ -8,7 +8,7 @@ namespace PaymentGateway.Services
 {
     public interface IBankProvider
     {
-        Task<bool> ValidCardDetails(CardDetails cardDetails);
+        Task<bool> ValidateCardDetails(CardDetails cardDetails);
 
         Task<PaymentResponse> ProcessPayment(CardDetails cardDetails, TransactionDetails transaction);
     }

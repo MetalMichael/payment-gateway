@@ -10,7 +10,7 @@ namespace PaymentGateway.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public class PaymentController : ApiControllerBase
     {
         private IBankProvider _bank;
 
@@ -20,12 +20,42 @@ namespace PaymentGateway.Controllers
         }
 
         [HttpPost("valid")]
-        public async Task<ActionResult<IEnumerable<string>>> CheckCard([FromBody]CardDetails cardDetails)
+        public async Task<IActionResult> CheckCard([FromBody]CardDetails cardDetails)
         {
-            // TODO
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var valid = await _bank.ValidateCardDetails(cardDetails);
+                return Ok(new CheckCardResult(valid));
+            }
+            catch (Exception e)
+            {
+                // TODO: Log
+                return InternalServerError();
+            }
         }
 
+        [HttpPost("process")]
+        public async Task<IActionResult> ProcessPayment([FromBody] PaymentDetails paymentDetails)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            try
+            {
+                var success = await _bank.ProcessPayment(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
+
+                // Store history of both failed and succeeded payments
+                var maskedDetails = new MaskedCardDetails(paymentDetails.CardDetails);
+                await _store.LogPaymentRequest();
+            }
+            catch (Exception e)
+            {
+                // TODO: Log
+                return InternalServerError();
+            }
+        }
     }
 }
