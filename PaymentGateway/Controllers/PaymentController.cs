@@ -53,8 +53,14 @@ namespace PaymentGateway.Controllers
                 PaymentResponse response = await _bank.ProcessPayment(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
 
                 // Store history of both failed and succeeded payments
-                var maskedDetails = new MaskedCardDetails(paymentDetails.CardDetails);
-                await _store.LogPaymentRequest(paymentId, maskedDetails, paymentDetails.TransactionDetails, response);
+                var request = new PaymentRequestLog
+                {
+                    Id = paymentId,
+                    MaskedCardDetails = new MaskedCardDetails(paymentDetails.CardDetails),
+                    TransactionDetails = paymentDetails.TransactionDetails,
+                    PaymentResponse = response
+                };
+                await _store.LogPaymentRequest(request);
 
                 return Ok(new ProcessPaymentResult(paymentId, response));
             }

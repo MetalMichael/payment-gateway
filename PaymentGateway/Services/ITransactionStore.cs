@@ -6,6 +6,8 @@ namespace PaymentGateway.Services
 {
     public interface ITransactionStore
     {
-        Task LogPaymentRequest(Guid id, MaskedCardDetails maskedDetails, TransactionDetails transactionDetails, PaymentResponse response);
+        Task LogPaymentRequest(PaymentRequestLog request);
+
+        Task<PaymentRequestLog> FindPaymentRequest(Guid id);
     }
 }
