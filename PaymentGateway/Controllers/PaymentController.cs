@@ -13,10 +13,12 @@ namespace PaymentGateway.Controllers
     public class PaymentController : ApiControllerBase
     {
         private IBankProvider _bank;
+        private ITransactionStore _store;
 
-        public PaymentController(IBankProvider bank)
+        public PaymentController(IBankProvider bank, ITransactionStore transactionStore)
         {
             _bank = bank;
+            _store = transactionStore;
         }
 
         [HttpPost("valid")]
@@ -27,7 +29,7 @@ namespace PaymentGateway.Controllers
 
             try
             {
-                var valid = await _bank.ValidateCardDetails(cardDetails);
+                bool valid = await _bank.ValidateCardDetails(cardDetails);
                 return Ok(new CheckCardResult(valid));
             }
             catch (Exception e)
@@ -45,11 +47,16 @@ namespace PaymentGateway.Controllers
 
             try
             {
-                var success = await _bank.ProcessPayment(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
+                // Create our own ID to track the request
+                var paymentId = Guid.NewGuid();
+
+                PaymentResponse response = await _bank.ProcessPayment(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
 
                 // Store history of both failed and succeeded payments
                 var maskedDetails = new MaskedCardDetails(paymentDetails.CardDetails);
-                await _store.LogPaymentRequest();
+                await _store.LogPaymentRequest(paymentId, maskedDetails, paymentDetails.TransactionDetails, response);
+
+                return Ok(new ProcessPaymentResult(paymentId, response));
             }
             catch (Exception e)
             {
