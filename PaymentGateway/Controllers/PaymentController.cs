@@ -19,6 +19,11 @@ namespace PaymentGateway.Controllers
             _store = paymentRequestStore;
         }
 
+        /// <summary>
+        /// Check if a Credit Card's details are valid
+        /// </summary>
+        /// <param name="cardDetails">Credit Card details to validate</param>
+        /// <returns>An object containing the result of the validation</returns>
         [HttpPost("valid")]
         public async Task<IActionResult> CheckCard([FromBody]CardDetails cardDetails)
         {
@@ -37,6 +42,11 @@ namespace PaymentGateway.Controllers
             }
         }
 
+        /// <summary>
+        /// Attempt to charge funds to a Credit Card, with a given Currency and Amount
+        /// </summary>
+        /// <param name="paymentDetails"></param>
+        /// <returns></returns>
         [HttpPost("process")]
         public async Task<IActionResult> ProcessPayment([FromBody] PaymentDetails paymentDetails)
         {

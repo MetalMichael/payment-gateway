@@ -1,4 +1,7 @@
-﻿namespace PaymentGateway.Models
+﻿using PaymentGateway.Attributes;
+using System.ComponentModel.DataAnnotations;
+
+namespace PaymentGateway.Models
 {
     /// <summary>
     /// Information required to make a transaction request
@@ -13,6 +16,8 @@
         /// <summary>
         /// The amount of currency
         /// </summary>
-        public double Amount { get; set; }
+        [Required]
+        [ValidCurrencyAmount]
+        public decimal Amount { get; set; }
     }
 }
