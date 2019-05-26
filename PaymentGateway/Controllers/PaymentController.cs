@@ -11,12 +11,12 @@ namespace PaymentGateway.Controllers
     public class PaymentController : ApiControllerBase
     {
         private IBankProvider _bank;
-        private ITransactionStore _store;
+        private IPaymentRequestStore _store;
 
-        public PaymentController(IBankProvider bank, ITransactionStore transactionStore)
+        public PaymentController(IBankProvider bank, IPaymentRequestStore paymentRequestStore)
         {
             _bank = bank;
-            _store = transactionStore;
+            _store = paymentRequestStore;
         }
 
         [HttpPost("valid")]

@@ -8,7 +8,7 @@ using PaymentGateway.Models;
 
 namespace PaymentGateway.Services
 {
-    public class CouchbaseTransactionStore : ITransactionStore
+    public class CouchbasePaymentRequestStore : IPaymentRequestStore
     {
         private const string TRANSACTION_BUCKET = "Transactions";
 
