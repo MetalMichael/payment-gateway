@@ -48,7 +48,7 @@ namespace PaymentGateway.Services
                 if (query.Success)
                     return query.Value;
 
-                throw new DocumentDoesNotExistException();
+                throw new RecordNotFoundException();
             }
         }
     }

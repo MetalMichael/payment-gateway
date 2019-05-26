@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Models;
@@ -63,6 +61,26 @@ namespace PaymentGateway.Controllers
                 await _store.LogPaymentRequest(request);
 
                 return Ok(new ProcessPaymentResult(paymentId, response));
+            }
+            catch (Exception e)
+            {
+                // TODO: Log
+                return InternalServerError();
+            }
+        }
+
+        [HttpGet("find/{id:Guid}")]
+        public async Task<IActionResult> FindPayment(Guid id)
+        {
+            try
+            {
+                var paymentInfo = await _store.FindPaymentRequest(id);
+
+                return Ok(paymentInfo);
+            }
+            catch(RecordNotFoundException)
+            {
+                return NotFound();
             }
             catch (Exception e)
             {
