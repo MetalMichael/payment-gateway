@@ -1,5 +1,4 @@
-﻿using PaymentGateway.Models;
-using System;
+﻿using System;
 
 namespace PaymentGateway.Models
 {
