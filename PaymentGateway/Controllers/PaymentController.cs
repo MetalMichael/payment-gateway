@@ -94,7 +94,7 @@ namespace PaymentGateway.Controllers
 
                 return Ok(paymentInfo);
             }
-            catch(RecordNotFoundException)
+            catch (RecordNotFoundException)
             {
                 return NotFound();
             }

@@ -1,3 +1,4 @@
+using Couchbase.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,12 +29,14 @@ namespace PaymentGateway
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payment Gateway", Version = "v1" });
             });
 
+            services.AddCouchbase(Configuration.GetSection("Couchbase"));
+
             services.AddScoped<IBankProvider, FakeBank>();
             services.AddScoped<IPaymentRequestStore, CouchbasePaymentRequestStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +62,11 @@ namespace PaymentGateway
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                app.ApplicationServices.GetRequiredService<ICouchbaseLifetimeService>().Close();
             });
         }
     }

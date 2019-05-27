@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Couchbase;
-using Couchbase.Authentication;
-using Couchbase.Configuration.Client;
+using Couchbase.Core;
+using Couchbase.Extensions.DependencyInjection;
 using PaymentGateway.Models;
 
 namespace PaymentGateway.Services
@@ -12,44 +11,37 @@ namespace PaymentGateway.Services
     {
         private const string TRANSACTION_BUCKET = "Transactions";
 
-        private Cluster GetCluster()
-        {
-            var cluster = new Cluster(new ClientConfiguration
-            {
-                Servers = new List<Uri> { new Uri("http://127.0.0.1") }
-            });
+        private readonly IBucket _bucket;
 
-            var authenticator = new PasswordAuthenticator("Administrator", "password");
-            cluster.Authenticate(authenticator);
-            return cluster;
+        public CouchbasePaymentRequestStore(IBucketProvider provider)
+        {
+            _bucket = provider.GetBucket(TRANSACTION_BUCKET);
         }
 
         public async Task LogPaymentRequest(PaymentRequestLog request)
         {
-            using (var cluster = GetCluster())
-            using (var bucket = cluster.OpenBucket(TRANSACTION_BUCKET))
+            var document = new Document<PaymentRequestLog>()
             {
-                var document = new Document<PaymentRequestLog>()
-                {
-                    Id = request.Id.ToString(),
-                    Content = request
-                };
+                Id = request.Id.ToString(),
+                Content = request
+            };
 
-                await bucket.UpsertAsync(document);
-            }
+            var result = await _bucket.UpsertAsync(document);
+            if (!result.Success)
+                throw new CouchbaseResponseException("Could not Log Payment");
+
         }
 
         public async Task<PaymentRequestLog> FindPaymentRequest(Guid id)
         {
-            using (var cluster = GetCluster())
-            using (var bucket = cluster.OpenBucket(TRANSACTION_BUCKET))
-            {
-                var query = await bucket.GetAsync<PaymentRequestLog>(id.ToString());
-                if (query.Success)
-                    return query.Value;
+            var query = await _bucket.GetAsync<PaymentRequestLog>(id.ToString());
+            if (query.Success)
+                return query.Value;
 
+            if (query.Status == Couchbase.IO.ResponseStatus.KeyNotFound)
                 throw new RecordNotFoundException();
-            }
+
+            throw new CouchbaseResponseException("Could not Find Payment Request");
         }
     }
 }
