@@ -11,11 +11,23 @@ namespace PaymentGateway.Services
     {
         private const string TRANSACTION_BUCKET = "Transactions";
 
-        private readonly IBucket _bucket;
+        private readonly IBucketProvider _provider;
+        private IBucket _bucket;
+        private IBucket Bucket
+        {
+            get
+            {
+                if (_bucket == null)
+                {
+                    _bucket = _provider.GetBucket(TRANSACTION_BUCKET);
+                }
+                return _bucket;
+            }
+        }
 
         public CouchbasePaymentRequestStore(IBucketProvider provider)
         {
-            _bucket = provider.GetBucket(TRANSACTION_BUCKET);
+            _provider = provider;
         }
 
         public async Task LogPaymentRequest(PaymentRequestLog request)
@@ -26,15 +38,14 @@ namespace PaymentGateway.Services
                 Content = request
             };
 
-            var result = await _bucket.UpsertAsync(document);
+            var result = await Bucket.UpsertAsync(document);
             if (!result.Success)
                 throw new CouchbaseResponseException("Could not Log Payment");
-
         }
 
         public async Task<PaymentRequestLog> FindPaymentRequest(Guid id)
         {
-            var query = await _bucket.GetAsync<PaymentRequestLog>(id.ToString());
+            var query = await Bucket.GetAsync<PaymentRequestLog>(id.ToString());
             if (query.Success)
                 return query.Value;
 
