@@ -25,6 +25,7 @@ namespace PaymentGateway.Controllers
         /// <param name="cardDetails">Credit Card details to validate</param>
         /// <returns>An object containing the result of the validation</returns>
         [HttpPost("valid")]
+        [ProducesResponseType(typeof(CheckCardResult), 200)]
         public async Task<IActionResult> CheckCard([FromBody]CardDetails cardDetails)
         {
             if (!ModelState.IsValid)
@@ -48,6 +49,7 @@ namespace PaymentGateway.Controllers
         /// <param name="paymentDetails"></param>
         /// <returns></returns>
         [HttpPost("process")]
+        [ProducesResponseType(typeof(ProcessPaymentResult), 200)]
         public async Task<IActionResult> ProcessPayment([FromBody] PaymentDetails paymentDetails)
         {
             if (!ModelState.IsValid)
@@ -80,11 +82,12 @@ namespace PaymentGateway.Controllers
         }
 
         [HttpGet("find/{id:Guid}")]
+        [ProducesResponseType(typeof(PaymentRequestLog), 200)]
         public async Task<IActionResult> FindPayment(Guid id)
         {
             try
             {
-                var paymentInfo = await _store.FindPaymentRequest(id);
+                PaymentRequestLog paymentInfo = await _store.FindPaymentRequest(id);
 
                 return Ok(paymentInfo);
             }

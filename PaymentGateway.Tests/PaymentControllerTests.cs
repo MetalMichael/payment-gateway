@@ -345,6 +345,6 @@ namespace Tests
             store.VerifyNoOtherCalls();
         }
 
-        // TODO: Find tests
+        // TODO: Create find tests
     }
 }
