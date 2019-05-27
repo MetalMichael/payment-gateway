@@ -7,16 +7,23 @@ namespace PaymentGateway.Models
     /// </summary>
     public class MaskedCardDetails
     {
+        /// <summary>
+        /// Empty constructor, needed for Deserialization
+        /// </summary>
+        public MaskedCardDetails()
+        {
+        }
+
         public MaskedCardDetails(CardDetails details)
         {
             MaskedCardNumber = MaskCardNumber(details.CardNumber);
             CardholderName = details.CardholderName;
             Expires = details.Expires;
             ValidFrom = details.ValidFrom;
-        }        
+        }
 
-        public string MaskedCardNumber { get; }
-        public string CardholderName { get; }
+        public string MaskedCardNumber { get; set; }
+        public string CardholderName { get; set; }
         public DateTime Expires { get; set; }
         public DateTime? ValidFrom { get; set; }
 
