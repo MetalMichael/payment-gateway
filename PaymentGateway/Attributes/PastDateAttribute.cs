@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace PaymentGateway.Attributes
 {
     /// <summary>
-    /// Custom Date validator to check that the date
+    /// Custom Date validator to check that the date is in the past
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class PastDateAttribute : ValidationAttribute

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using PaymentGateway.Models;
 using System;
 
-namespace Tests
+namespace PaymentGateway.Tests
 {
     public class PaymentControllerTests
     {
@@ -31,7 +31,7 @@ namespace Tests
                 CardNumber = "1234567890123456",
                 Expires = DateTime.Now.AddMonths(5),
                 ValidFrom = DateTime.Now.AddMonths(-1),
-                CSC = 400
+                CSC = "000"
             });
 
             Assert.IsInstanceOf<BadRequestObjectResult>(response);
@@ -103,7 +103,7 @@ namespace Tests
                 CardNumber = "1234567890123456",
                 Expires = DateTime.Now.AddMonths(5),
                 ValidFrom = DateTime.Now.AddMonths(-1),
-                CSC = 400
+                CSC = "222"
             };
             var response = await controller.CheckCard(details);
 
@@ -158,7 +158,7 @@ namespace Tests
                     CardholderName = "平安",
                     CardNumber = "1234567890123456",
                     Expires = DateTime.Now.AddMonths(5),
-                    CSC = 400
+                    CSC = "123"
                 },
                 TransactionDetails = new TransactionDetails
                 {
@@ -198,7 +198,7 @@ namespace Tests
                     CardholderName = "平安",
                     CardNumber = "1234567890123456",
                     Expires = DateTime.Now.AddMonths(5),
-                    CSC = 400
+                    CSC = "400"
                 },
                 TransactionDetails = new TransactionDetails
                 {
@@ -237,7 +237,7 @@ namespace Tests
                 CardholderName = "ひとみ",
                 CardNumber = "1234567890123456",
                 Expires = DateTime.Now.AddMonths(5),
-                CSC = 400
+                CSC = "111"
             };
 
             var transaction = new TransactionDetails
@@ -288,7 +288,7 @@ namespace Tests
                     CardholderName = "伟祺",
                     CardNumber = "1234567890123456",
                     Expires = DateTime.Now.AddMonths(5),
-                    CSC = 400
+                    CSC = "999"
                 },
                 TransactionDetails = transaction
             });
@@ -331,7 +331,7 @@ namespace Tests
                     CardholderName = "bob",
                     CardNumber = "1234567890123454",
                     Expires = DateTime.Now.AddMonths(5),
-                    CSC = 400
+                    CSC = "876"
                 },
                 TransactionDetails = transaction
             });

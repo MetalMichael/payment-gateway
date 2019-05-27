@@ -12,17 +12,21 @@ namespace PaymentGateway.Models
         /// <summary>
         /// Name of the Cardholder
         /// </summary>
+        [Required]
         public string CardholderName { get; set; }
 
         /// <summary>
         /// 16 digit card number
         /// </summary>
-        [StringLength(16)]
+        [Required]
+        [StringLength(16, MinimumLength = 16)]
+        [RegularExpression("[0-9]+")]
         public string CardNumber { get; set; }
 
         /// <summary>
         /// Expiry date of the card
         /// </summary>
+        [Required]
         [FutureDate]
         public DateTime Expires { get; set; }
 
@@ -35,6 +39,9 @@ namespace PaymentGateway.Models
         /// <summary>
         /// Card Security Code (a.k.a. CVV, CVD, CVC, etc.)
         /// </summary>
-        public ushort CSC { get; set; }
+        [Required]
+        [StringLength(3, MinimumLength = 3)]
+        [RegularExpression("[0-9]+")]
+        public string CSC { get; set; }
     }
 }
