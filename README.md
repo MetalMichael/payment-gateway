@@ -14,7 +14,7 @@ Build using .NET Core 3.0 preview 5.
 # Getting Started
 
 The application can be built using `docker-compose`.
-Once running, the blazor app can be connected to on port 5000.
+Once running, the payment gateway api is available on port 5000.
 
 This also includes a [couchbase](https://www.couchbase.com/) server running on port 8091.
 
