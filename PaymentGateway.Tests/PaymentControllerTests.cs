@@ -6,6 +6,7 @@ using PaymentGateway.Services;
 using System.Threading.Tasks;
 using PaymentGateway.Models;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace PaymentGateway.Tests
 {
@@ -18,10 +19,11 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task CheckCard_InvalidModel_BadRequest()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
 
             controller.ModelState.AddModelError("an error", "error");
 
@@ -45,13 +47,14 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task CheckCard_ValidCard_Ok_Valid()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
             bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(true));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var response = await controller.CheckCard(new CardDetails());
 
             Assert.IsInstanceOf<OkObjectResult>(response);
@@ -66,13 +69,14 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task CheckCard_InvalidCard_Ok_NotValid()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
             bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(false));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var response = await controller.CheckCard(new CardDetails());
 
             Assert.IsInstanceOf<OkObjectResult>(response);
@@ -89,13 +93,14 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task CheckCard_PassesCorrectDetailsToBank_NoProcess()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
             bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(false));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
 
             var details = new CardDetails
             {
@@ -119,10 +124,11 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_InvalidModel_BadRequest()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
 
             controller.ModelState.AddModelError("an error", "error");
 
@@ -139,6 +145,7 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_ValidAccepted_OkSuccess()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
@@ -150,7 +157,7 @@ namespace PaymentGateway.Tests
                     TransactionId = id
                 }));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var response = await controller.ProcessPayment(new PaymentDetails
             {
                 CardDetails = new CardDetails
@@ -181,6 +188,7 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_ValidRejected_OkFailure()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
@@ -190,7 +198,7 @@ namespace PaymentGateway.Tests
                     Successful = false
                 }));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var response = await controller.ProcessPayment(new PaymentDetails
             {
                 CardDetails = new CardDetails
@@ -221,6 +229,7 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_PassesCorrectDetailsToBank()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
@@ -230,7 +239,7 @@ namespace PaymentGateway.Tests
                     Successful = false
                 }));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
 
             var card = new CardDetails
             {
@@ -263,6 +272,7 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_Success_RecordSuccess()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
@@ -275,7 +285,7 @@ namespace PaymentGateway.Tests
                 }));
             store.Setup(s => s.LogPaymentRequest(It.IsAny<PaymentRequestLog>()));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var transaction = new TransactionDetails
             {
                 Amount = 123m,
@@ -308,6 +318,7 @@ namespace PaymentGateway.Tests
         [Test]
         public async Task ProcessPayment_Rejected_RecordFailure()
         {
+            var log = new Mock<ILogger<PaymentController>>();
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
@@ -318,7 +329,7 @@ namespace PaymentGateway.Tests
                 }));
             store.Setup(s => s.LogPaymentRequest(It.IsAny<PaymentRequestLog>()));
 
-            var controller = new PaymentController(bank.Object, store.Object);
+            var controller = new PaymentController(log.Object, bank.Object, store.Object);
             var transaction = new TransactionDetails
             {
                 Amount = 3m,
