@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PaymentGateway.Models;
 using PaymentGateway.Services;
 
@@ -10,11 +11,13 @@ namespace PaymentGateway.Controllers
     [ApiController]
     public class PaymentController : ApiControllerBase
     {
+        private ILogger<PaymentController> _logger;
         private IBankProvider _bank;
         private IPaymentRequestStore _store;
 
-        public PaymentController(IBankProvider bank, IPaymentRequestStore paymentRequestStore)
+        public PaymentController(ILogger<PaymentController> logger, IBankProvider bank, IPaymentRequestStore paymentRequestStore)
         {
+            _logger = logger;
             _bank = bank;
             _store = paymentRequestStore;
         }
@@ -38,7 +41,7 @@ namespace PaymentGateway.Controllers
             }
             catch (Exception e)
             {
-                // TODO: Log
+                _logger.LogError(e, "Error occurred Checking Card");
                 return InternalServerError();
             }
         }
@@ -76,7 +79,7 @@ namespace PaymentGateway.Controllers
             }
             catch (Exception e)
             {
-                // TODO: Log
+                _logger.LogError(e, "Error occurred Processing Payment");
                 return InternalServerError();
             }
         }
@@ -97,7 +100,7 @@ namespace PaymentGateway.Controllers
             }
             catch (Exception e)
             {
-                // TODO: Log
+                _logger.LogError(e, "Error occurred Finding Payment");
                 return InternalServerError();
             }
         }
