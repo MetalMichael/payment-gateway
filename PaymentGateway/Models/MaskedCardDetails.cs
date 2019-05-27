@@ -10,9 +10,15 @@ namespace PaymentGateway.Models
         public MaskedCardDetails(CardDetails details)
         {
             MaskedCardNumber = MaskCardNumber(details.CardNumber);
-        }
+            CardholderName = details.CardholderName;
+            Expires = details.Expires;
+            ValidFrom = details.ValidFrom;
+        }        
 
         public string MaskedCardNumber { get; }
+        public string CardholderName { get; }
+        public DateTime Expires { get; set; }
+        public DateTime? ValidFrom { get; set; }
 
         /// <summary>
         /// Hide most of the card digits
