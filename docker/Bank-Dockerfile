@@ -4,6 +4,7 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
+COPY ["PaymentGateway.SharedModels/PaymentGateway.SharedModels.csproj", "PaymentGateway.SharedModels/"]
 COPY ["BankService/BankService.csproj", "BankService/"]
 
 RUN dotnet restore "BankService/BankService.csproj"

@@ -5,12 +5,12 @@ ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 EXPOSE 80
 
 WORKDIR /src
-COPY ["PaymentGateway/PaymentGateway.csproj", "PaymentGateway/"]
+COPY ["BankService.csproj", "BankService/"]
 
-RUN dotnet restore "PaymentGateway/PaymentGateway.csproj"
+RUN dotnet restore "BankService/BankService.csproj"
 COPY . .
-WORKDIR "/src/PaymentGateway"
-RUN dotnet build --no-restore "PaymentGateway.csproj" -c $BUILD_CONFIGURATION
+WORKDIR "/src/BankService"
+RUN dotnet build --no-restore "BankService.csproj" -c $BUILD_CONFIGURATION
 
 RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION --" > /entrypoint.sh
 
