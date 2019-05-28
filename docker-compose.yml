@@ -30,7 +30,7 @@ services:
         ports:
           - 5000:80
         environment:
-          - Couchbase:Servers:0=http://$COMPUTERNAME:8091/
+          - Couchbase:Servers:0=http://couchbase:8091/
         depends_on:
           - bank
           - couchbase
