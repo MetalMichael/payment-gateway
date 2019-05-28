@@ -1,4 +1,6 @@
 ﻿using System;
+using PaymentGateway.SharedModels;
+
 namespace PaymentGateway.Models
 {
     public class PaymentRequestLog

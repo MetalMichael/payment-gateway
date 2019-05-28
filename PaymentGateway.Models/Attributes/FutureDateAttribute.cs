@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PaymentGateway.Attributes
+namespace PaymentGateway.SharedModels.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class FutureDateAttribute : ValidationAttribute

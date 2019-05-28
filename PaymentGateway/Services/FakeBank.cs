@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using PaymentGateway.Models;
+using PaymentGateway.SharedModels;
 
 namespace PaymentGateway.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace PaymentGateway.Models
+﻿namespace PaymentGateway.SharedModels
 {
     public class PaymentDetails
     {

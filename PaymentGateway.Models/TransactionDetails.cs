@@ -1,7 +1,7 @@
-﻿using PaymentGateway.Attributes;
+﻿using PaymentGateway.SharedModels.Attributes;
 using System.ComponentModel.DataAnnotations;
 
-namespace PaymentGateway.Models
+namespace PaymentGateway.SharedModels
 {
     /// <summary>
     /// Information required to make a transaction request

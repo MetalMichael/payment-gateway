@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
-using PaymentGateway.Models;
+using PaymentGateway.SharedModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace PaymentGateway.Tests
 {

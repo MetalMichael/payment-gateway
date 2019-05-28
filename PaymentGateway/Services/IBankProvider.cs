@@ -1,4 +1,5 @@
 ﻿using PaymentGateway.Models;
+using PaymentGateway.SharedModels;
 using System.Threading.Tasks;
 
 namespace PaymentGateway.Services

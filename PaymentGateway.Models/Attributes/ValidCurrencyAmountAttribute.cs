@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PaymentGateway.Attributes
+namespace PaymentGateway.SharedModels.Attributes
 {
     /// <summary>
     /// Custom Validator to check that the amount of currency is valid

@@ -5,6 +5,7 @@ using PaymentGateway.Controllers;
 using PaymentGateway.Services;
 using System.Threading.Tasks;
 using PaymentGateway.Models;
+using PaymentGateway.SharedModels;
 using System;
 using Microsoft.Extensions.Logging;
 

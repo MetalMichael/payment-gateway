@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PaymentGateway.Attributes
+namespace PaymentGateway.SharedModels.Attributes
 {
     /// <summary>
     /// Custom Date validator to check that the date is in the past

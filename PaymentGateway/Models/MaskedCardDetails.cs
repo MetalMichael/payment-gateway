@@ -1,4 +1,5 @@
 ﻿using System;
+using PaymentGateway.SharedModels;
 
 namespace PaymentGateway.Models
 {

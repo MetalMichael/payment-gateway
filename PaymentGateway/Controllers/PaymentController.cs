@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PaymentGateway.Models;
 using PaymentGateway.Services;
+using PaymentGateway.SharedModels;
 
 namespace PaymentGateway.Controllers
 {

@@ -1,8 +1,8 @@
-﻿using PaymentGateway.Attributes;
+﻿using PaymentGateway.SharedModels.Attributes;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PaymentGateway.Models
+namespace PaymentGateway.SharedModels
 {
     /// <summary>
     /// Credit Card information
