@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Tests", "Pay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankService", "BankService\BankService.csproj", "{FE5AE000-D2EB-41AE-A954-ACCDB9D2B058}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.SharedModels", "PaymentGateway.Models\PaymentGateway.SharedModels.csproj", "{A62A85DD-1845-4430-9E0A-3B7F0E8ED232}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.SharedModels", "PaymentGateway.SharedModels\PaymentGateway.SharedModels.csproj", "{A62A85DD-1845-4430-9E0A-3B7F0E8ED232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
