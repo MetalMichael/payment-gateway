@@ -14,7 +14,7 @@ namespace PaymentGateway.Services
         /// </summary>
         /// <param name="cardDetails">Card details to verify</param>
         /// <returns>Validity of the Card Details</returns>
-        public Task<bool> ValidateCardDetails(CardDetails cardDetails)
+        public Task<bool> ValidateCardDetailsAsync(CardDetails cardDetails)
         {
             return Task.FromResult(true);
         }
@@ -25,7 +25,7 @@ namespace PaymentGateway.Services
         /// <param name="cardDetails">Card details to use for the payment</param>
         /// <param name="transaction">Currency and amount to process</param>
         /// <returns>Model containing the result of the Payment and, if applicable, Transaction ID</returns>
-        public Task<PaymentResponse> ProcessPayment(CardDetails cardDetails, TransactionDetails transaction)
+        public Task<PaymentResponse> ProcessPaymentAsync(CardDetails cardDetails, TransactionDetails transaction)
         {
             return Task.FromResult(new PaymentResponse
             {

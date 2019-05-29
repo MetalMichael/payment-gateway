@@ -10,7 +10,7 @@ namespace PaymentGateway.Services
         /// </summary>
         /// <param name="cardDetails">Card details to verify</param>
         /// <returns>Validity of the Card Details</returns>
-        Task<bool> ValidateCardDetails(CardDetails cardDetails);
+        Task<bool> ValidateCardDetailsAsync(CardDetails cardDetails);
 
         /// <summary>
         /// Attempt to process a payment (Card Details and Transaction)
@@ -18,6 +18,6 @@ namespace PaymentGateway.Services
         /// <param name="cardDetails">Card details to use for the payment</param>
         /// <param name="transaction">Currency and amount to process</param>
         /// <returns>Model containing the result of the Payment and, if applicable, Transaction ID</returns>
-        Task<PaymentResponse> ProcessPayment(CardDetails cardDetails, TransactionDetails transaction);
+        Task<PaymentResponse> ProcessPaymentAsync(CardDetails cardDetails, TransactionDetails transaction);
     }
 }

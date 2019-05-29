@@ -37,7 +37,7 @@ namespace PaymentGateway.Controllers
 
             try
             {
-                bool valid = await _bank.ValidateCardDetails(cardDetails);
+                bool valid = await _bank.ValidateCardDetailsAsync(cardDetails);
                 return Ok(new CheckCardResult(valid));
             }
             catch (Exception e)
@@ -56,6 +56,7 @@ namespace PaymentGateway.Controllers
         [ProducesResponseType(typeof(ProcessPaymentResult), 200)]
         public async Task<IActionResult> ProcessPayment([FromBody] PaymentDetails paymentDetails)
         {
+            // TODO: Relying on the bank to check the validity of the currency. We only ensure it's 3 letters.
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -64,7 +65,8 @@ namespace PaymentGateway.Controllers
                 // Create our own ID to track the request
                 var paymentId = Guid.NewGuid();
 
-                PaymentResponse response = await _bank.ProcessPayment(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
+                // Attempt to pay via the bank
+                PaymentResponse response = await _bank.ProcessPaymentAsync(paymentDetails.CardDetails, paymentDetails.TransactionDetails);
 
                 // Store history of both failed and succeeded payments
                 var request = new PaymentRequestLog

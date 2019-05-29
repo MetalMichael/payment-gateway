@@ -52,7 +52,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
+            bank.Setup(x => x.ValidateCardDetailsAsync(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(true));
 
             var controller = new PaymentController(log.Object, bank.Object, store.Object);
@@ -74,7 +74,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
+            bank.Setup(x => x.ValidateCardDetailsAsync(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(false));
 
             var controller = new PaymentController(log.Object, bank.Object, store.Object);
@@ -98,7 +98,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ValidateCardDetails(It.IsAny<CardDetails>()))
+            bank.Setup(x => x.ValidateCardDetailsAsync(It.IsAny<CardDetails>()))
                 .Returns(Task.FromResult(false));
 
             var controller = new PaymentController(log.Object, bank.Object, store.Object);
@@ -114,7 +114,7 @@ namespace PaymentGateway.Tests
             var response = await controller.CheckCard(details);
 
             // TODO: This is lazy, should check actual values of the object to ensure they've not changed
-            bank.Verify(b => b.ValidateCardDetails(details), Times.Once);
+            bank.Verify(b => b.ValidateCardDetailsAsync(details), Times.Once);
             bank.VerifyNoOtherCalls();
             store.VerifyNoOtherCalls();
         }
@@ -151,7 +151,7 @@ namespace PaymentGateway.Tests
             var store = new Mock<IPaymentRequestStore>();
 
             var id = Guid.NewGuid();
-            bank.Setup(x => x.ProcessPayment(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
+            bank.Setup(x => x.ProcessPaymentAsync(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
                 .Returns(Task.FromResult(new PaymentResponse
                 {
                     Successful = true,
@@ -193,7 +193,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ProcessPayment(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
+            bank.Setup(x => x.ProcessPaymentAsync(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
                 .Returns(Task.FromResult(new PaymentResponse
                 {
                     Successful = false
@@ -234,7 +234,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ProcessPayment(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
+            bank.Setup(x => x.ProcessPaymentAsync(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
                 .Returns(Task.FromResult(new PaymentResponse
                 {
                     Successful = false
@@ -263,7 +263,7 @@ namespace PaymentGateway.Tests
             });
 
             // TODO: This is lazy, should check actual values of the object to ensure they've not changed
-            bank.Verify(b => b.ProcessPayment(card, transaction), Times.Once);
+            bank.Verify(b => b.ProcessPaymentAsync(card, transaction), Times.Once);
             bank.VerifyNoOtherCalls();
         }
 
@@ -278,7 +278,7 @@ namespace PaymentGateway.Tests
             var store = new Mock<IPaymentRequestStore>();
 
             var id = Guid.NewGuid();
-            bank.Setup(x => x.ProcessPayment(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
+            bank.Setup(x => x.ProcessPaymentAsync(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
                 .Returns(Task.FromResult(new PaymentResponse
                 {
                     Successful = true,
@@ -323,7 +323,7 @@ namespace PaymentGateway.Tests
             var bank = new Mock<IBankProvider>();
             var store = new Mock<IPaymentRequestStore>();
 
-            bank.Setup(x => x.ProcessPayment(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
+            bank.Setup(x => x.ProcessPaymentAsync(It.IsAny<CardDetails>(), It.IsAny<TransactionDetails>()))
                 .Returns(Task.FromResult(new PaymentResponse
                 {
                     Successful = false
