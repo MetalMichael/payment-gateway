@@ -4,7 +4,7 @@
 
 Demo Payment Gateway application.
 
-Build using .NET Core 3.0 preview 5.
+*Built using .NET Core 3.0 preview 5*.
 
 **Stack:**
  - ASP.NET Core
