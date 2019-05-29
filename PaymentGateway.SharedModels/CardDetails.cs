@@ -27,13 +27,13 @@ namespace PaymentGateway.SharedModels
         /// Expiry date of the card
         /// </summary>
         [Required]
-        [FutureDate]
+        [FutureMonth]
         public DateTime Expires { get; set; }
 
         /// <summary>
         /// Valid from date of the card (optional)
         /// </summary>
-        [PastDate(true)]
+        [PastMonth(true)]
         public DateTime? ValidFrom { get; set; }
 
         /// <summary>
