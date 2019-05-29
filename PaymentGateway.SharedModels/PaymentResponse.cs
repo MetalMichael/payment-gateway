@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PaymentGateway.Models
+namespace PaymentGateway.SharedModels
 {
     /// <summary>
     /// Response from a Bank after an attempted payment

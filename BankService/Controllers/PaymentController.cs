@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.SharedModels;
+using System;
 
 namespace BankService.Controllers
 {
@@ -9,15 +10,21 @@ namespace BankService.Controllers
     public class PaymentController : ControllerBase
     {
         [HttpPost("check")]
+        [ProducesResponseType(typeof(bool), 200)]
         public IActionResult CheckCard([FromBody] CardDetails details)
         {
             return Ok(true);
         }
 
         [HttpPost("pay")]
-        public IActionResult ProcessPayment([FromBody] TransactionDetails transaction)
+        [ProducesResponseType(typeof(PaymentResponse), 200)]
+        public IActionResult ProcessPayment([FromBody] PaymentDetails transaction)
         {
-            return Ok(true);
+            return Ok(new PaymentResponse
+            {
+                Successful = true,
+                TransactionId = Guid.NewGuid()
+            });
         }
     }
 }

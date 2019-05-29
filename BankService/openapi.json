@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/valid": {
+    "/api/check": {
       "post": {
         "tags": [
           "Payment"
@@ -36,29 +36,12 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CheckCardResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CheckCardResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CheckCardResult"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
     },
-    "/api/process": {
+    "/api/pay": {
       "post": {
         "tags": [
           "Payment"
@@ -67,87 +50,29 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentDetails"
+                "$ref": "#/components/schemas/TransactionDetails"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentDetails"
+                "$ref": "#/components/schemas/TransactionDetails"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentDetails"
+                "$ref": "#/components/schemas/TransactionDetails"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentDetails"
+                "$ref": "#/components/schemas/TransactionDetails"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProcessPaymentResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProcessPaymentResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProcessPaymentResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/find/{id}": {
-      "get": {
-        "tags": [
-          "Payment"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "default": ""
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestLog"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestLog"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestLog"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -191,16 +116,6 @@
         },
         "additionalProperties": false
       },
-      "CheckCardResult": {
-        "type": "object",
-        "properties": {
-          "valid": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "TransactionDetails": {
         "required": [
           "amount"
@@ -213,92 +128,6 @@
           "amount": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PaymentDetails": {
-        "type": "object",
-        "properties": {
-          "cardDetails": {
-            "$ref": "#/components/schemas/CardDetails"
-          },
-          "transactionDetails": {
-            "$ref": "#/components/schemas/TransactionDetails"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProcessPaymentResult": {
-        "type": "object",
-        "properties": {
-          "paymentId": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "success": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "transactionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "MaskedCardDetails": {
-        "type": "object",
-        "properties": {
-          "maskedCardNumber": {
-            "type": "string"
-          },
-          "cardholderName": {
-            "type": "string"
-          },
-          "expires": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "validFrom": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PaymentResponse": {
-        "type": "object",
-        "properties": {
-          "successful": {
-            "type": "boolean"
-          },
-          "transactionId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PaymentRequestLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "maskedCardDetails": {
-            "$ref": "#/components/schemas/MaskedCardDetails"
-          },
-          "transactionDetails": {
-            "$ref": "#/components/schemas/TransactionDetails"
-          },
-          "paymentResponse": {
-            "$ref": "#/components/schemas/PaymentResponse"
           }
         },
         "additionalProperties": false

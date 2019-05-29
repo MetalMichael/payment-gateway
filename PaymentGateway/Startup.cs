@@ -31,7 +31,7 @@ namespace PaymentGateway
 
             services.AddCouchbase(Configuration.GetSection("Couchbase"));
 
-            services.AddScoped<IBankProvider, FakeBank>();
+            services.AddScoped<IBankProvider, BankServiceProvider>();
             services.AddScoped<IPaymentRequestStore, CouchbasePaymentRequestStore>();
         }
 
