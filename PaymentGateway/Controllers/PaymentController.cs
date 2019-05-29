@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PaymentGateway.Models;
 using PaymentGateway.Services;
 using PaymentGateway.SharedModels;
+using System;
+using System.Threading.Tasks;
 
 namespace PaymentGateway.Controllers
 {
@@ -30,7 +30,7 @@ namespace PaymentGateway.Controllers
         /// <returns>An object containing the result of the validation</returns>
         [HttpPost("valid")]
         [ProducesResponseType(typeof(CheckCardResult), 200)]
-        public async Task<IActionResult> CheckCard([FromBody]CardDetails cardDetails)
+        public async Task<IActionResult> CheckCard([FromBody] CardDetails cardDetails)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

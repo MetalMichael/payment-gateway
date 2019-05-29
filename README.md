@@ -22,12 +22,17 @@ This also includes a [couchbase](https://www.couchbase.com/) server running on p
 **Note: Couchbase must be configured manually. It is expected that a Bucket called `Transactions` exists.**
 Default username/password in docker-compose: `Administrator` // `password`
 
-## TODO
+# Available Endpoints
+* `/process` - Attempt to charge a transaction to a given Credit Card
+* `/find/{id}` - Find the details of a previous attempted payment using its Payment ID
+* `/valid` - Check if a Credit Card's details are valid
+
+# TODO
 
 - [ ] Automate Couchbase initialization
 - [x] Build Bank into its own service
 
-## General Comments
+# General Comments
 * Validation of `Expires` and `ValidFrom` using DateTime and DataAnnotations is fairly primitive and likely not an appropriate use of data types. They also only work in UTC Time, which could have edge cases around the end of the month. In reality this should probably just accept any valid month/year as a string, and allow the bank to handle invalid past/future dates.
 * On the topic of validation, things like the Luhn test, or card provider checks aren't performed, since it is expected that the Merchant or Bank will execute these.
 * Tests currently only compare instances, rather than data
