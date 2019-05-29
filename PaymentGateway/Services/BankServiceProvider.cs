@@ -10,16 +10,55 @@ using TransactionDetails = PaymentGateway.SharedModels.TransactionDetails;
 
 namespace PaymentGateway.Services
 {
+    /// <summary>
+    /// Service to verify and forward payment details with a remote Banking Service
+    /// </summary>
     public class BankServiceProvider : IBankProvider
     {
         private ILogger<BankServiceProvider> _log;
         private BankClient _client = new BankClient(Environment.GetEnvironmentVariable("BANK_URL"), new HttpClient());
 
+        /// <summary>
+        /// Create a new BankServiceProvider
+        /// </summary>
+        /// <param name="logger">Logging instance</param>
         public BankServiceProvider(ILogger<BankServiceProvider> logger)
         {
             _log = logger;
         }
 
+        /// <summary>
+        /// Verify the validity of a card's details using the Bank Service
+        /// </summary>
+        /// <param name="cardDetails">Card details to verify</param>
+        /// <returns>Validity of the Card Details</returns>
+        public async Task<bool> ValidateCardDetails(CardDetails cardDetails)
+        {
+            try
+            {
+                var response = await _client.CheckAsync(new Clients.CardDetails
+                {
+                    CardholderName = cardDetails.CardholderName,
+                    CardNumber = cardDetails.CardNumber,
+                    Csc = cardDetails.CSC,
+                    Expires = cardDetails.Expires,
+                    ValidFrom = cardDetails.ValidFrom
+                });
+                return response;
+            }
+            catch (Exception e)
+            {
+                _log.LogError(e, "Error in bank Validating Card Details");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Attempt to process a payment (Card Details and Transaction) using the Bank Service
+        /// </summary>
+        /// <param name="cardDetails">Card details to use for the payment</param>
+        /// <param name="transaction">Currency and amount to process</param>
+        /// <returns>Model containing the result of the Payment and, if applicable, Transaction ID</returns>
         public async Task<PaymentResponse> ProcessPayment(CardDetails cardDetails, TransactionDetails transaction)
         {
             try
@@ -49,27 +88,6 @@ namespace PaymentGateway.Services
             catch (Exception e)
             {
                 _log.LogError(e, "Error in bank Processing Payment");
-                throw;
-            }
-        }
-
-        public async Task<bool> ValidateCardDetails(CardDetails cardDetails)
-        {
-            try
-            {
-                var response = await _client.CheckAsync(new Clients.CardDetails
-                {
-                    CardholderName = cardDetails.CardholderName,
-                    CardNumber = cardDetails.CardNumber,
-                    Csc = cardDetails.CSC,
-                    Expires = cardDetails.Expires,
-                    ValidFrom = cardDetails.ValidFrom
-                });
-                return response;
-            }
-            catch (Exception e)
-            {
-                _log.LogError(e, "Error in bank Validating Card Details");
                 throw;
             }
         }

@@ -7,6 +7,9 @@ using PaymentGateway.Models;
 
 namespace PaymentGateway.Services
 {
+    /// <summary>
+    /// Persistant Data Store to contain logs of payment requests, and their responses
+    /// </summary>
     public class CouchbasePaymentRequestStore : IPaymentRequestStore
     {
         private const string TRANSACTION_BUCKET = "Transactions";
@@ -25,11 +28,19 @@ namespace PaymentGateway.Services
             }
         }
 
+        /// <summary>
+        /// Create a new PaymentRequestStore
+        /// </summary>
+        /// <param name="provider">Couchbase Bucket Provider</param>
         public CouchbasePaymentRequestStore(IBucketProvider provider)
         {
             _provider = provider;
         }
 
+        /// <summary>
+        /// Store the record of an attempted payment, and its result
+        /// </summary>
+        /// <param name="request">Log of the payment request</param>
         public async Task LogPaymentRequest(PaymentRequestLog request)
         {
             var document = new Document<PaymentRequestLog>()
@@ -43,6 +54,12 @@ namespace PaymentGateway.Services
                 throw new CouchbaseResponseException("Could not Log Payment");
         }
 
+        /// <summary>
+        /// Retrieve the record of an attempted payment, and its result
+        /// </summary>
+        /// <param name="id">ID of the attempted payment (Payment ID)</param>
+        /// <exception cref="RecordNotFoundException">Record with <paramref name="id"/> cannot be found.</exception>
+        /// <returns>Record of an attempted payment</returns>
         public async Task<PaymentRequestLog> FindPaymentRequest(Guid id)
         {
             var query = await Bucket.GetAsync<PaymentRequestLog>(id.ToString());

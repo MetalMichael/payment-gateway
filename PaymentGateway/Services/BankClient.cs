@@ -8,6 +8,9 @@ namespace PaymentGateway.Services.Clients
 {
 #pragma warning disable
 
+    /// <summary>
+    /// Auto-generated BankClient
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.3.1.0 (NJsonSchema v9.14.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class BankClient
     {

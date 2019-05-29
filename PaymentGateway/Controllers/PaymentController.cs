@@ -50,8 +50,8 @@ namespace PaymentGateway.Controllers
         /// <summary>
         /// Attempt to charge funds to a Credit Card, with a given Currency and Amount
         /// </summary>
-        /// <param name="paymentDetails"></param>
-        /// <returns></returns>
+        /// <param name="paymentDetails">Details of the Payment to process, including Card Details and Transaction</param>
+        /// <returns>Model containing the status of the payment, with Payment attempt ID and (if successful) Transaction ID</returns>
         [HttpPost("process")]
         [ProducesResponseType(typeof(ProcessPaymentResult), 200)]
         public async Task<IActionResult> ProcessPayment([FromBody] PaymentDetails paymentDetails)
@@ -85,6 +85,11 @@ namespace PaymentGateway.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieve the record of an attempted payment
+        /// </summary>
+        /// <param name="id">Payment ID</param>
+        /// <returns>Details of the payment, if found</returns>
         [HttpGet("find/{id:Guid}")]
         [ProducesResponseType(typeof(PaymentRequestLog), 200)]
         public async Task<IActionResult> FindPayment(Guid id)

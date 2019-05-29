@@ -10,17 +10,17 @@ namespace PaymentGateway.Services
     public interface IPaymentRequestStore
     {
         /// <summary>
-        /// Store a record of a Payment attempt, regardless of its successfulness
+        /// Store a record of a Payment attempt and its result, regardless of its successfulness
         /// </summary>
         /// <param name="request">Payment Request information to store</param>
         Task LogPaymentRequest(PaymentRequestLog request);
 
         /// <summary>
-        /// Retrieve a record of a Payment attempt
+        /// Retrieve a record of a Payment attempt and its result
         /// </summary>
         /// <param name="paymentId">The Payment Request's ID</param>
-        /// <exception cref="RecordNotFoundException">Thrown if no Payment Request found with ID</exception>
-        /// <returns>Payment Request Log model</returns>
+        /// <exception cref="RecordNotFoundException">Thrown if no Payment Request found with <paramref name="paymentId"/></exception>
+        /// <returns>Record of an attempted payment</returns>
         Task<PaymentRequestLog> FindPaymentRequest(Guid paymentId);
     }
 }

@@ -15,6 +15,10 @@ namespace PaymentGateway.Models
         {
         }
 
+        /// <summary>
+        /// Create a new MaskedCardDetails model
+        /// </summary>
+        /// <param name="details">CardDetails to mask</param>
         public MaskedCardDetails(CardDetails details)
         {
             MaskedCardNumber = MaskCardNumber(details.CardNumber);
@@ -23,9 +27,24 @@ namespace PaymentGateway.Models
             ValidFrom = details.ValidFrom;
         }
 
+        /// <summary>
+        /// Censored Credit Card Number (e.g. ************1234)
+        /// </summary>
         public string MaskedCardNumber { get; set; }
+
+        /// <summary>
+        /// Name of the Cardholder
+        /// </summary>
         public string CardholderName { get; set; }
+
+        /// <summary>
+        /// Expiry date of the Credit Card
+        /// </summary>
         public DateTime Expires { get; set; }
+
+        /// <summary>
+        /// (Optional) Date the Credit Card is valid from
+        /// </summary>
         public DateTime? ValidFrom { get; set; }
 
         /// <summary>

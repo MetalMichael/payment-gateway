@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace PaymentGateway.SharedModels
 {
     /// <summary>
-    /// Information required to make a transaction request
+    /// Information regarding the amount of currency in a transaction
     /// </summary>
     public class TransactionDetails
     {

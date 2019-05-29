@@ -3,6 +3,9 @@ using System;
 
 namespace PaymentGateway.Models
 {
+    /// <summary>
+    /// Result of an attempted Payment
+    /// </summary>
     public class ProcessPaymentResult
     {
         /// <summary>
@@ -21,6 +24,11 @@ namespace PaymentGateway.Models
         /// </summary
         public Guid? TransactionId { get; }
 
+        /// <summary>
+        /// Create a new ProcessPaymentResult
+        /// </summary>
+        /// <param name="paymentId">ID of the Payment</param>
+        /// <param name="response">Response from the Bank</param>
         public ProcessPaymentResult(Guid paymentId, PaymentResponse response)
         {
             PaymentId = paymentId;
