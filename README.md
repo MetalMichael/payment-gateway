@@ -23,11 +23,12 @@ This also includes a [couchbase](https://www.couchbase.com/) server running on p
 ## TODO
 
 - [ ] Automate Couchbase initialization
-- [ ] Build Bank into its own service
-- [ ] Encryption
+- [x] Build Bank into its own service
 
 ## General Comments
 * Validation of `Expires` and `ValidFrom` using DateTime and DataAnnotations is fairly primitive and likely not an appropriate use of data types. They also only work in UTC Time, which could have edge cases around the end of the month. In reality this should probably just accept any valid month/year as a string, and allow the bank to handle invalid past/future dates.
 * On the topic of validation, things like the Luhn test, or card provider checks aren't performed, since it is expected that the Merchant or Bank will execute these. The same could likely be said for the previous dates.
 * Tests currently only check instances are the same, rather than data
 * Model use is currently overloaded, and a little hazy. Often cleaner to segregate Request, Response and Application models, though creates a lot of boilerplate, and is time consuming.
+* Doesn't currently use SSL/encryption. This could be added easily through an API Gateway. Couchbase would need a custom certificate.
+* No current Auth. This could be added through client secrets and an OAuth3 provider, for example.
